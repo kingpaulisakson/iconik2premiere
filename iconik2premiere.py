@@ -6,7 +6,7 @@ Builds a sequence containing the reviewed media on V1 (+ A1/A2) and drops a
 timeline marker at every iconik comment.
 
 Usage:
-    python iconik2premiere.py "TL_MP_OuterBanks_v1.mp4-comment.csv"
+    python iconik2premiere.py "downloaded-comments.csv"
     python iconik2premiere.py notes.csv --media "path/to/cut.mp4" --out notes.xml
     python iconik2premiere.py notes.csv --fps 23.976 --frames 9962
 """
@@ -374,8 +374,8 @@ def build_xml(seq_name, media_path, info, markers, add_media):
 
 # ----------------------------------------------------------------------- main
 
-def main():
-    ap = argparse.ArgumentParser(
+def main(argv=None):
+    ap =argparse.ArgumentParser(
         description="Convert an iconik comment CSV into a Premiere Pro XML sequence with markers.")
     ap.add_argument("csv", help="iconik '<media>-comment.csv' export")
     ap.add_argument("--media", help="reviewed media file (auto-detected from the CSV name if omitted)")
@@ -392,7 +392,7 @@ def main():
     ap.add_argument("--include-resolved", action="store_true",
                     help="include comments whose status is not ACTIVE")
     ap.add_argument("--txt", action="store_true", help="also write a plain-text notes list")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     csv_path = os.path.abspath(args.csv)
     if not os.path.isfile(csv_path):
